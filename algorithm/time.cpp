@@ -11,13 +11,46 @@
 #include <stdio.h>
 #include <vector>
 #include <string>
+#include <sstream>
 using std::cout;
 using std::endl;
 
-#define DC(x) #x
+long g_Timezone = 0;
+
+const std::string& GetLocalTZ()
+{
+	static std::string str;
+	static bool init = false;
+	if( !init )
+	{
+		std::ostringstream so;
+		tzset();
+		if( g_Timezone == 0 )
+		{
+			g_Timezone = ::timezone;
+		}
+
+		so << ::tzname[0] << ::timezone / 3600;
+		str = so.str();
+		init = true;
+	}
+	return str;
+}
+
+void GetLocalTime( tm& tv1, time_t _time )
+{
+	_time -= g_Timezone;
+	gmtime_r( &_time, &tv1 );
+	printf( "Local UTC:	%s", asctime( gmtime(&_time) ) );
+	//printf( "Local local:	%s", asctime( localtime(&_time) ) );
+}
 
 int main( int argc, char* argv[] )
 {
+
+	std::string str = GetLocalTZ();
+	cout << str << endl;
+
 	time_t _t = time(NULL);
 	printf( "UTC:	%s", asctime( gmtime(&_t) ) );
 	printf( "local:	%s", asctime( localtime(&_t) ) );
@@ -26,6 +59,28 @@ int main( int argc, char* argv[] )
 	//_t -= _temp;
 	printf( "UTC:	%s", asctime( gmtime(&_temp) ) );
 	printf( "local:	%s", asctime( localtime(&_temp) ) );
+	
+	time_t _temptime = (_t / 86400) * 86400;
+	printf( "UTC:	%s", asctime( gmtime(&_temptime) ) );
+	printf( "local:	%s", asctime( localtime(&_temptime) ) );
+
+	time_t _abc = 1476029708;
+	printf( "UTC:	%s", asctime( gmtime(&_abc) ) );
+	printf( "local:	%s", asctime( localtime(&_abc) ) );
+
+	tm _tm;
+	GetLocalTime( _tm, _abc );
+
+	//tm* _tm = localtime( &_t );
+	//_tm->tm_hour = 0;
+	//_tm->tm_min = 5;
+	//_tm->tm_sec = 0;
+	//time_t _uptime = mktime( _tm );
+	//_temp = _uptime - _uptime % 86400;
+	//printf( "UTC:	%s", asctime( gmtime(&_uptime) ) );
+	//printf( "local:	%s", asctime( localtime(&_uptime) ) );
+	//printf( "UTC:	%s", asctime( gmtime(&_temp) ) );
+	//printf( "local:	%s", asctime( localtime(&_temp) ) );
 
 	struct timespec tv;
 	clock_gettime( CLOCK_REALTIME, &tv );
@@ -38,15 +93,6 @@ int main( int argc, char* argv[] )
 	cout << tv.tv_sec << endl;
 	cout << tv.tv_nsec << endl;
 	cout << tv.tv_nsec / 1000000L << endl;
-
-	cout << __FUNCTION__ << endl;
-	cout << __LINE__ << endl;
-	cout << __FILE__ << endl;
-	cout << __DATE__ << endl;
-	cout << __TIME__ << endl;
-	cout << __STDC__ << endl;
-
-	cout << DC(aafaf) << endl;
 
 	return 0;
 }
