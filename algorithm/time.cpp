@@ -42,7 +42,17 @@ void GetLocalTime( tm& tv1, time_t _time )
 	_time -= g_Timezone;
 	gmtime_r( &_time, &tv1 );
 	printf( "Local UTC:	%s", asctime( gmtime(&_time) ) );
-	//printf( "Local local:	%s", asctime( localtime(&_time) ) );
+	printf( "Local local:	%s", asctime( localtime(&_time) ) );
+}
+
+int LocalDaysFromEpoch( time_t _t )
+{
+	return ( _t - g_Timezone ) / ( 24 * 60 * 60 );
+}
+
+time_t GetLocalDayStart( time_t _t )
+{
+	return LocalDaysFromEpoch( _t ) * ( 24 * 60 * 60 ) + g_Timezone;
 }
 
 int main( int argc, char* argv[] )
@@ -50,6 +60,8 @@ int main( int argc, char* argv[] )
 
 	std::string str = GetLocalTZ();
 	cout << str << endl;
+	cout << ::tzname[0] << endl;
+	cout << ::tzname[1] << endl;
 
 	time_t _t = time(NULL);
 	printf( "UTC:	%s", asctime( gmtime(&_t) ) );
@@ -60,16 +72,22 @@ int main( int argc, char* argv[] )
 	printf( "UTC:	%s", asctime( gmtime(&_temp) ) );
 	printf( "local:	%s", asctime( localtime(&_temp) ) );
 	
-	time_t _temptime = (_t / 86400) * 86400;
-	printf( "UTC:	%s", asctime( gmtime(&_temptime) ) );
-	printf( "local:	%s", asctime( localtime(&_temptime) ) );
+	//time_t _temptime = (_t / 86400) * 86400;
+	//printf( "UTC:	%s", asctime( gmtime(&_temptime) ) );
+	//printf( "local:	%s", asctime( localtime(&_temptime) ) );
 
-	time_t _abc = 1476029708;
-	printf( "UTC:	%s", asctime( gmtime(&_abc) ) );
-	printf( "local:	%s", asctime( localtime(&_abc) ) );
+	//time_t _abc = 1476029708;
+	//printf( "UTC:	%s", asctime( gmtime(&_abc) ) );
+	//printf( "local:	%s", asctime( localtime(&_abc) ) );
 
-	tm _tm;
-	GetLocalTime( _tm, _abc );
+	//tm _tm;
+	//GetLocalTime( _tm, _abc );
+	//GetLocalTime( _tm, _t );
+	//printf( "local:	%s", asctime( localtime(&_t) ) );
+
+	time_t _curtime = GetLocalDayStart( _t );
+	printf( "UTC:	%s", asctime( gmtime(&_curtime) ) );
+	printf( "local:	%s", asctime( localtime(&_curtime) ) );
 
 	//tm* _tm = localtime( &_t );
 	//_tm->tm_hour = 0;
