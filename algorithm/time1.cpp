@@ -31,5 +31,9 @@ int main( int argc, char* argv[] )
 
 	cout << "home test" << endl;
 
+	time_t _temp2 = _t + 604800;
+	printf( "UTC:	%s", asctime( gmtime(&_temp2) ) );
+	printf( "local:	%s", asctime( localtime(&_temp2) ) );
+
 	return 0;
 }

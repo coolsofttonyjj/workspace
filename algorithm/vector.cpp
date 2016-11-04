@@ -121,14 +121,36 @@ int main( int argc, char* argv[] )
 
 	for( int i = 0 ; i < 3; ++i )
 	{
-		int index = (int)(::random() % _tempVec.size());
-		_tempVec.erase( _tempVec.begin() + index );
+		//int index = (int)(::random() % _tempVec.size());
+		//_tempVec.erase( _tempVec.begin() + index );
 	}
 
-	for( auto it : _tempVec )
+	//for( auto it : _tempVec )
+	//{
+		//cout << it << endl;
+	//}
+
+	//std::vector<int> _tempVecc;
+	//_tempVecc.resize(4);
+	//for( auto it : _tempVecc )
+	//{
+		//cout << it << endl;
+	//}
+
+	//std::vector< std::vector<int> > _DoubleVec;
+	//_DoubleVec.resize(2);
+	//_DoubleVec[0].push_back( 100 );
+	//_DoubleVec[2].push_back( 200 );
+	
+	size_t number = 0;
+	for( ; number < _tempVec.size(); ++number )
 	{
-		cout << it << endl;
+	
 	}
+
+	cout << _tempVec.size() << endl;
+	cout << number << endl;
+
 
 	return 0;
 }

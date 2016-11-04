@@ -33,6 +33,21 @@ struct Nonumber2
 	int a[0];
 };
 
+enum Flag
+{
+	A = 100,
+	B = 200,
+	C = 300,
+};
+
+bool Judge( Flag _value )
+{
+	int abc = 900;
+	abc += _value;
+	cout << abc << endl;
+	return true;
+}
+
 int main( int argc, char* argv[] )
 {
 	int a = 1;
@@ -70,6 +85,7 @@ int main( int argc, char* argv[] )
 	int _ee = ({ 2; 3;  });
 	cout << _ee << endl;
   
+	Judge( Flag::A );
 
 	return 0;
 }
