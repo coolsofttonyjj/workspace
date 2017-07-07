@@ -1,0 +1,7 @@
+#!/bin/bash
+now=$(date)
+echo "before: ${now}"
+d=$( date -d "$1" "+%Y-%m-%d %H:%M:%S")
+#sudo date -s "$d" > /dev/null
+now=${d}
+echo "after: ${now}"
